@@ -4,17 +4,19 @@
 
 %hook HBAppGridViewController
 
+%property(nonatomic, retain)UIImageView* wallpaperView;
+
 - (void)viewDidLoad { // add image wallpaper
 
 	%orig;
 
-	if (wallpaperView) return;
+	if ([self wallpaperView]) return;
 
-	wallpaperView = [[UIImageView alloc] initWithFrame:[[self view] bounds]];
-	[wallpaperView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
-	[wallpaperView setContentMode:UIViewContentModeScaleAspectFill];
-	[wallpaperView setImage:[UIImage imageWithContentsOfFile:@"/Library/Ballet/wallpaper.png"]];
-	[[self view] insertSubview:wallpaperView atIndex:0];
+	self.wallpaperView = [[UIImageView alloc] initWithFrame:[[self view] bounds]];
+	[[self wallpaperView] setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+	[[self wallpaperView] setContentMode:UIViewContentModeScaleAspectFill];
+	[[self wallpaperView] setImage:[UIImage imageWithContentsOfFile:@"/Library/Ballet/wallpaper.png"]];
+	[[self view] insertSubview:[self wallpaperView] atIndex:0];
 
 }
 
@@ -26,29 +28,32 @@
 
 %hook HBAppGridViewController
 
+%property(nonatomic, retain)AVQueuePlayer* player;
+%property(nonatomic, retain)AVPlayerItem* playerItem;
+%property(nonatomic, retain)AVPlayerLooper* playerLooper;
+%property(nonatomic, retain)AVPlayerLayer* playerLayer;
+
 - (void)viewDidLoad { // add video wallpaper
 
 	%orig;
 
-	if (playerLayer) return;
+	if ([self playerLayer]) return;
 
-	NSURL* url = [NSURL fileURLWithPath:[NSString stringWithFormat:@"/Library/Ballet/wallpaper.mp4"]];
+    self.playerItem = [AVPlayerItem playerItemWithURL:[NSURL fileURLWithPath:[NSString stringWithFormat:@"/Library/Ballet/wallpaper.mp4"]]];
 
-    playerItem = [AVPlayerItem playerItemWithURL:url];
-
-    player = [AVQueuePlayer playerWithPlayerItem:playerItem];
-    player.volume = 0.0;
-	[player setPreventsDisplaySleepDuringVideoPlayback:NO];
+    self.player = [AVQueuePlayer playerWithPlayerItem:[self playerItem]];
+    [[self player] setMuted:YES];
+	[[self player] setPreventsDisplaySleepDuringVideoPlayback:NO];
 	[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
 
-	playerLooper = [AVPlayerLooper playerLooperWithPlayer:player templateItem:playerItem];
+	self.playerLooper = [AVPlayerLooper playerLooperWithPlayer:[self player] templateItem:[self playerItem]];
 
-    playerLayer = [AVPlayerLayer playerLayerWithPlayer:player];
-    [playerLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
-    [playerLayer setFrame:[[[self view] layer] bounds]];
-    [[[self view] layer] insertSublayer:playerLayer atIndex:0];
+    self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:[self player]];
+    [[self playerLayer] setVideoGravity:AVLayerVideoGravityResizeAspectFill];
+    [[self playerLayer] setFrame:[[[self view] layer] bounds]];
+    [[[self view] layer] insertSublayer:[self playerLayer] atIndex:0];
 
-	[player play];
+	[[self player] play];
 
 }
 
@@ -56,7 +61,7 @@
 
 	%orig;
 
-	[player play];
+	[[self player] play];
 
 }
 
@@ -64,7 +69,7 @@
 
 %end
 
-%group Ballet
+%group BalletCompletion
 
 %hook HBUIMainAppGridTopShelfContainerView
 
@@ -97,7 +102,6 @@ static void loadPrefs() {
 	loadPrefs();
 	
 	if (enabled) {
-		%init(Ballet);
 		if (useImageWallpaperSwitch && [[NSFileManager defaultManager] fileExistsAtPath:@"/Library/Ballet/wallpaper.png"]) {
 			%init(BalletImage);
 			return;
@@ -105,6 +109,7 @@ static void loadPrefs() {
 			%init(BalletVideo);
 			return;
 		}
+		%init(BalletCompletion);
 	}
 
 }

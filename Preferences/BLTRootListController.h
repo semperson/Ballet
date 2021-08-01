@@ -1,5 +1,4 @@
 #import <UIKit/UIKit.h>
-#import <Foundation/Foundation.h>
 #import "TVSettingsKit/TSKViewController.h"
 #import "TVSettingsKit/TSKSettingGroup.h"
 #import "TVSettingsKit/TSKVibrantImageView.h"

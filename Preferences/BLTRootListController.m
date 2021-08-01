@@ -1,13 +1,13 @@
 #include "BLTRootListController.h"
 
-UIBlurEffect* blur;
-UIVisualEffectView* blurView;
+UIBlurEffect* blur  = nil;
+UIVisualEffectView* blurView = nil;
 
-TSKSettingItem* enableSwitch;
-TSKSettingItem* useImageWallpaperSwitch;
-TSKSettingItem* useVideoWallpaperSwitch;
-TSKSettingItem* respringButton;
-TSKSettingItem* resetButton;
+TSKSettingItem* enableSwitch = nil;
+TSKSettingItem* useImageWallpaperSwitch = nil;
+TSKSettingItem* useVideoWallpaperSwitch = nil;
+TSKSettingItem* respringButton = nil;
+TSKSettingItem* resetButton = nil;
 
 #define PLIST_PATH @"/var/mobile/Library/Preferences/love.litten.balletpreferences.plist"
 inline NSString* GetPrefVal(NSString* key){
@@ -22,15 +22,15 @@ inline NSString* GetPrefVal(NSString* key){
     
     NSMutableArray* _backingArray = [NSMutableArray new];
     
-    // enable
+    // enable switch
     enableSwitch = [TSKSettingItem toggleItemWithTitle:@"Enabled" description:@"" representedObject:facade keyPath:@"Enabled" onTitle:@"Enabled" offTitle:@"Disabled"];
     
     TSKSettingGroup* enableGroup = [TSKSettingGroup groupWithTitle:@"Enable" settingItems:@[enableSwitch]];
     [_backingArray addObject:enableGroup];
 
     // settings
-    useImageWallpaperSwitch = [TSKSettingItem toggleItemWithTitle:@"Use Image Wallpaper" description:@"" representedObject:facade keyPath:@"useImageWallpaper" onTitle:@"Enabled" offTitle:@"Disabled"];
-    useVideoWallpaperSwitch = [TSKSettingItem toggleItemWithTitle:@"Use Video Wallpaper" description:@"" representedObject:facade keyPath:@"useVideoWallpaper" onTitle:@"Enabled" offTitle:@"Disabled"];
+    useImageWallpaperSwitch = [TSKSettingItem toggleItemWithTitle:@"Use image wallpaper" description:@"" representedObject:facade keyPath:@"useImageWallpaper" onTitle:@"Enabled" offTitle:@"Disabled"];
+    useVideoWallpaperSwitch = [TSKSettingItem toggleItemWithTitle:@"Use video wallpaper" description:@"" representedObject:facade keyPath:@"useVideoWallpaper" onTitle:@"Enabled" offTitle:@"Disabled"];
     
     TSKSettingGroup* settingsGroup = [TSKSettingGroup groupWithTitle:@"Wallpaper" settingItems:@[useImageWallpaperSwitch, useVideoWallpaperSwitch]];
     [_backingArray addObject:settingsGroup];
@@ -68,14 +68,14 @@ inline NSString* GetPrefVal(NSString* key){
         } completion:nil];
 
 
-        CAGradientLayer* gradient = [[CAGradientLayer alloc] init];
+        CAGradientLayer* gradient = [CAGradientLayer new];
         [gradient setFrame:[[self view] bounds]];
         [gradient setStartPoint:CGPointMake(0.0, 0.5)];
         [gradient setEndPoint:CGPointMake(1.0, 0.5)];
         [gradient setColors:[NSArray arrayWithObjects:(id)[[UIColor colorWithRed: 1.00 green: 0.92 blue: 0.94 alpha: 1.00] CGColor], (id)[[UIColor colorWithRed: 1.00 green: 0.72 blue: 0.79 alpha: 1.00] CGColor], (id)[[UIColor colorWithRed: 1.00 green: 0.52 blue: 0.64 alpha: 1.00] CGColor], nil]];
         [gradient setLocations:[NSArray arrayWithObjects:@(-0.5), @(1.5), nil]];
             
-        CABasicAnimation* animation = [[CABasicAnimation alloc] init];
+        CABasicAnimation* animation = [CABasicAnimation new];
         [animation setKeyPath:@"colors"];
         [animation setFromValue:[NSArray arrayWithObjects:(id)[[UIColor colorWithRed: 1.00 green: 0.92 blue: 0.94 alpha: 1.00] CGColor], (id)[[UIColor colorWithRed: 1.00 green: 0.72 blue: 0.79 alpha: 1.00] CGColor], (id)[[UIColor colorWithRed: 1.00 green: 0.52 blue: 0.64 alpha: 1.00] CGColor], nil]];
         [animation setToValue:[NSArray arrayWithObjects:(id)[[UIColor colorWithRed: 1.00 green: 0.52 blue: 0.64 alpha: 1.00] CGColor], (id)[[UIColor colorWithRed: 1.00 green: 0.72 blue: 0.79 alpha: 1.00] CGColor], (id)[[UIColor colorWithRed: 1.00 green: 0.92 blue: 0.94 alpha: 1.00] CGColor], nil]];
@@ -95,7 +95,7 @@ inline NSString* GetPrefVal(NSString* key){
 - (void)resetPrompt {
 
     UIAlertController* resetAlert = [UIAlertController alertControllerWithTitle:@"Ballet"
-	message:@"Do You Really Want To Reset Your Preferences?"
+	message:@"Do you really want to reset your preferences?"
 	preferredStyle:UIAlertControllerStyleActionSheet];
 	
     UIAlertAction* confirmAction = [UIAlertAction actionWithTitle:@"Yaw" style:UIAlertActionStyleDestructive handler:^(UIAlertAction* action) {
@@ -152,7 +152,7 @@ inline NSString* GetPrefVal(NSString* key){
 
 - (void)showViewController:(TSKSettingItem *)item {
 
-    TSKTextInputViewController* testObject = [[TSKTextInputViewController alloc] init];
+    TSKTextInputViewController* testObject = [TSKTextInputViewController new];
     
     testObject.headerText = @"Ballet";
     testObject.initialText = [[self ourPreferences] stringForKey:item.keyPath];
@@ -175,10 +175,10 @@ inline NSString* GetPrefVal(NSString* key){
 
     [super editingController:arg1 didProvideValue:arg2 forSettingItem:arg3];
     
-    TVSPreferences* prefs = [TVSPreferences preferencesWithDomain:@"love.litten.balletpreferences"];
+    TVSPreferences* preferences = [TVSPreferences preferencesWithDomain:@"love.litten.balletpreferences"];
     
-    [prefs setObject:arg2 forKey:arg3.keyPath];
-    [prefs synchronize];
+    [preferences setObject:arg2 forKey:arg3.keyPath];
+    [preferences synchronize];
     
 }
 

@@ -1,4 +1,4 @@
-BUNDLE_NAME = BalletPrefs
+BUNDLE_NAME = BalletPreferences
 $(BUNDLE_NAME)_FILES = $(wildcard *.m)
 $(BUNDLE_NAME)_INSTALL_PATH = /Library/PreferenceBundles
 $(BUNDLE_NAME)_FRAMEWORKS = UIKit TVSettingKit 
