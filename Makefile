@@ -1,6 +1,6 @@
 export ARCHS = arm64 arm64e
 export TARGET = appletv:clang:13.4:13.0
-export SYSROOT = $(THEOS)/sdks/tvOS/13/iPhoneOS13.4.sdk
+export SYSROOT = $(THEOS)/sdks/tvOS/13/AppleTVOS13.4.sdk
 
 SUBPROJECTS += Tweak Preferences
 
