@@ -21,5 +21,7 @@ You may not redistribute this source code or packages from it
 You may not use this project to make profit like money
 
 ## Credits
+  - tvOS Preferences template
+    - [iKilledAppl3](https://twitter.com/iKilledAppl3)
   - Icon and Banner
     - [74k1_](https://twitter.com/74k1_)
