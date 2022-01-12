@@ -15,6 +15,9 @@ SCP usage example:
   - [Theos](https://theos.dev/) is required to compile the project
   - You may want to edit the root `Makefile` to use your Theos SDK and toolchain
 
+## Compatibility
+AppleTV running tvOS 13 or later
+
 ## License
 If you take code from this repository please link it, or my [Twitter](https://twitter.com/schneelittchen) to your project<br>
 You may not redistribute this source code or packages from it<br>
