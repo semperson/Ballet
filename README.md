@@ -1,4 +1,4 @@
-# Ballet
+# Ballet 🩰
 Wallpapers for your Apple TV
 
 ## Installation
